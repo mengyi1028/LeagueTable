@@ -20,23 +20,27 @@ class LeagueTable
         $this->standings[$player]['score'] += $score;
     }
     
-    public function playerRank(int $rank)
-    { 
-        function sortByScore($a, $b){
-        if($a["score"]==$b["score"])
-           return sortByGame($a, $b);
-       return ($a["score"]<$b["score"])?-1:1;
-    }
-     function sortByGame($a, $b){
+     public static  function sortByScore($a, $b){
+        if($a['score']==$b['score'])
+           return self::sortByGame($a, $b);
+       return ($a['score']>$b['score'])?-1:1;
+         }
+    
+     public static  function sortByGame($a, $b){
         if($a["games_played"]==$b["games_played"])
            return ($a["index"]<$b["index"])?-1:1;;
        return ($a["games_played"]<$b["games_played"])?-1:1;
     }
+    
+    public function playerRank(int $rank)
+    {        
+    
        $newArr=$this->standings;
-        uasort($newArr, "sortByScore");
+        uasort($newArr, Array("LeagueTable","sortByScore") );
         $allPlayers=array_keys($newArr);
         return  $allPlayers[$rank-1];
     }
+    
     
     
 }
